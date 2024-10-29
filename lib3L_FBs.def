@@ -1,0 +1,10 @@
+EXPORTS
+    SimulationStep @1
+    _ZN8DllClass10HelloWorldEv @2
+    _ZN8DllClassC1Ev @3
+    _ZN8DllClassC2Ev @4
+    _ZN8DllClassD0Ev @5
+    _ZN8DllClassD1Ev @6
+    _ZN8DllClassD2Ev @7
+    _ZTI8DllClass @8 DATA
+    _ZTV8DllClass @9 DATA
