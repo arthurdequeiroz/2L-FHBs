@@ -43,7 +43,7 @@ extern "C"
 		static double vll10_ref = 0., vlr10_ref = 0., vll20_ref = 0., vlr20_ref = 0.; // FBs
 		
 		// Bus Control - Simple PI 
-		static float  vCs_ref = 170.; 							// Reference Bus Voltage
+		static float  vCs_ref = 510.; 							// Reference Bus Voltage
 		static double vCs_error = 0.; 							// Error Bus Voltage
 		static double Ig_ref = 0.;						    	// Reference Current Amplitude 
 		static double Ivc_error = 0., Pvc_error = 0., Ig0 = 3.; // PI Error
@@ -91,6 +91,8 @@ extern "C"
 		static double kpil = 1.0, kiil = 10; // Same gains for both PIs
 		static double Iil_error = 0, Pil_error = 0; // Errors integral and proportional
 		static int sign = 0;
+		
+		double erro_ant;
 		
 		///////////////////////////////////
 		// Input
@@ -194,10 +196,11 @@ extern "C"
 			// Controller 
 			X1ccs = X1cs;  
 			X2ccs = X2cs;  
-			X1cs = F11s*X1ccs + F12s*X2ccs + H11s*ig_error;
-			X2cs = F21s*X1ccs + F22s*X2ccs + H21s*ig_error;
-			vg_ref = X1cs + ig_error*kps ;  // Output PI
+			X1cs = F11s*X1ccs + F12s*X2ccs + H11s*erro_ant;
+			X2cs = F21s*X1ccs + F22s*X2ccs + H21s*erro_ant;
+			vg_ref = X1cs + ig_error*kps  ;  // Output PI
 			//vg_ref = 109.5461*sqrt(2)*sin(theta-0.1598);
+			erro_ant = ig_error;
 			
 			// Saturator
 			if (vg_ref >= 1.5*vCs_ref)
@@ -333,9 +336,10 @@ extern "C"
 			u = 0.5;
 			vu = u*vumin + (1-u)*vumax; 
 			//vu = 0;
-			vs0_ref = (vu)/vCs_ref + 0.5;
-			vl0_ref = (vu + vl_ref)/vCs_ref + 0.5;
-			vg0_ref = (vu + vg_ref)/vCs_ref + 0.5;
+			vl_ref = 110*sqrt(2)*sin(theta);
+			vs0_ref = (-vg_ref)/vCs_ref + 0.5;
+			vl0_ref = (-vl_ref)/vCs_ref + 0.5;
+			//vg0_ref = (vu + vg_ref)/vCs_ref + 0.5;
 			
 		}
 		
